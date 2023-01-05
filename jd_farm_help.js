@@ -1,7 +1,7 @@
 /*
-东东水果助力和领取邀请奖励
-8 2,5 * * * jd_farm_help.js
-updatetime:2022/11/16
+东东农场助力
+20 2,5 * * * jd_farm_help.js
+updatetime:2022/12/22
 dlan
 */
 const $ = new Env('东东农场-助力');
@@ -619,16 +619,16 @@ async function getAwardInviteFriend() {
     // console.log(`查询好友列表数据：${JSON.stringify($.friendList)}\n`)
     if ($.friendList) {
         console.log(`\n今日已邀请好友${$.friendList.inviteFriendCount}个 / 每日邀请上限${$.friendList.inviteFriendMax}个`);
-        console.log(`开始删除${$.friendList.friends && $.friendList.friends.length}个好友,可拿每天的邀请奖励`);
-        if ($.friendList.friends && $.friendList.friends.length > 0) {
-            for (let friend of $.friendList.friends) {
-                console.log(`开始删除好友 [${friend.shareCode}]`);
-                const deleteFriendForFarm = await request('deleteFriendForFarm', { "shareCode": `${friend.shareCode}`, "version": 8, "channel": 1 });
-                if (deleteFriendForFarm && deleteFriendForFarm.code === '0') {
-                    console.log(`删除成功！\n`);
-                }
-            }
-        }
+        // console.log(`开始删除${$.friendList.friends && $.friendList.friends.length}个好友,可拿每天的邀请奖励`);
+        // if ($.friendList.friends && $.friendList.friends.length > 0) {
+        //     for (let friend of $.friendList.friends) {
+        //         console.log(`开始删除好友 [${friend.shareCode}]`);
+        //         const deleteFriendForFarm = await request('deleteFriendForFarm', { "shareCode": `${friend.shareCode}`, "version": 8, "channel": 1 });
+        //         if (deleteFriendForFarm && deleteFriendForFarm.code === '0') {
+        //             console.log(`删除成功！\n`);
+        //         }
+        //     }
+        // }
         await receiveFriendInvite();//为他人助力,接受邀请成为别人的好友
         if ($.friendList.inviteFriendCount > 0) {
             if ($.friendList.inviteFriendCount > $.friendList.inviteFriendGotAwardCount) {
