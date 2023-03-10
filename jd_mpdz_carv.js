@@ -1,16 +1,17 @@
 /*
 头文字J 
-活动快捷入口： 11:/参与头文字J，集能量兑换京豆，【Jιιngヵ栋】 ￥Z9yfjBqzLWt￥
+活动快捷入口： 19:/参与头文字J，集能量兑换京豆！P5loICDei3！⇥Jℹ️ng◼倲
 日常任务，助力，游戏
 第一个账号助力作者 其他依次助力CK1
 默认不做加购任务，如需要设置变量erport car_addsku='true'
 只跑前5个CK
-33 10,19 * * * jd_mpdz_car.js 
+定时随机，一起冲会炸
 */
 
 const $ = new Env("头文字JJJ");
 const jdCookieNode=$.isNode()?require('./jdCookie.js'):'';
 const notify=$.isNode()?require('./sendNotify'):'';
+const dy = require('./function/dylanx.js');
 let cookiesArr=[],cookie='';
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => { cookiesArr.push(jdCookieNode[item])})
@@ -27,7 +28,7 @@ let n=0;
 n=Math.floor(Math.random()*shareUuidArr.length);
 let shareUuid=shareUuidArr[n]||'';
 !(async()=>{
-	console.log('活动快捷入口： 11:/参与头文字J，集能量兑换京豆，【Jιιngヵ栋】 ￥Z9yfjBqzLWt￥');
+	console.log('活动快捷入口： 19:/参与头文字J，集能量兑换京豆！P5loICDei3！⇥Jℹ️ng◼倲');
     if (!cookiesArr[0]) {
       $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
         "open-url": "https://bean.m.jd.com/"
@@ -91,7 +92,8 @@ async function run(){
             switch($.missionType){
                 case 'bingCar':
                 case 'openCard':
-                case 'shareAct':    
+                case 'shareAct':   
+                case 'viewChannelCommodity':   				
                     break;
                 case 'viewCommodity':
                 case 'viewThemeConference':
@@ -136,9 +138,9 @@ async function run(){
         await $.wait(1000);
 		console.log(`当前剩余能量：${$.remainPoint}\n`);
 		await $.wait(1000);
-		console.log('开始兑换5豆。。。');
-		await takePostRequest('exchange');
-		await $.wait(500);
+		//console.log('开始兑换5豆。。。');
+		//await takePostRequest('exchange');
+		//await $.wait(500);
 		await takePostRequest('missionInviteList');
         await $.wait(1000);
         console.log(`去助力：${$.inviteNick}`);
@@ -160,7 +162,7 @@ async function takePostRequest(type){
 	let admJson='';
 	switch(type){
 		case 'isvObfuscator':
-            let sign = await getSignfromDY('isvObfuscator', { "id": "", "url": "https://mpdz-car-dz.isvjcloud.com" })
+            let sign = await dy.getbody('isvObfuscator', { "id": "", "url": "https://mpdz-car-dz.isvjcloud.com" })
 			url='https://api.m.jd.com/client.action?functionId=isvObfuscator';
 			body=sign;
             break;
@@ -472,42 +474,7 @@ function getPostRequest(url,body,method='POST'){
 	}
 	return{'url':url,'method':method,'headers':headers,'body':body,'timeout':30000};
 }
-function getSignfromDY(functionId, body) {
-    var strsign = '';
-    let data = { 'fn': functionId, 'body': JSON.stringify(body) };
-    return new Promise((resolve) => {
-        let opt = {
-            url: "https://api.nolanstore.top/sign",
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-            , timeout: 30000
-        }
-        $.post(opt, async (err, resp, data) => {
-            try {
-                if (data) {
-                    data = JSON.parse(data);
-                    if (data && data.body) {
-                        console.log("连接Nolan服务成功");
-                            strsign = data.body || '';
-                        if (strsign != '') {
-                            resolve(strsign);
-                        }
-                        else
-                            console.log("签名获取失败,换个时间再试.");
-                    } else {
-                        console.log(data.msg);
-                    }
-                } else { console.log('连接服务失败，重试。。。') }
-            } catch (e) {
-                $.logErr(e, resp);
-            } finally {
-                resolve(strsign);
-            }
-        })
-    })
-}
+
 function randomString(e) {
     e = e || 32;
     let t = "abcdef0123456789", a = t.length, n = "";
